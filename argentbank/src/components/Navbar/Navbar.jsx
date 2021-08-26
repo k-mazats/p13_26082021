@@ -15,7 +15,7 @@ const Navbar = () => {
 		const isLogged = { loginStatus: false, token: '' };
 		store.dispatch(setLogged(isLogged));
 		store.dispatch(resetUser());
-		localStorage.removeItem('token');
+		localStorage.removeItem('isLogged');
 	};
 
 	return (

@@ -23,7 +23,7 @@ const LoginForm = () => {
 		setRemember(!remember);
 	};
 	const login = (token) => {
-		remember && localStorage.setItem('token', token);
+		remember && localStorage.setItem('isLogged', JSON.stringify({loginStatus: true, token}));
 		const isLogged = { loginStatus: true, token };
 		store.dispatch(setLogged(isLogged));
 	};

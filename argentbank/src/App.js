@@ -7,9 +7,6 @@ import {
 } from 'react-router-dom';
 import { useStore, useSelector } from 'react-redux';
 
-import { setUser } from './features/user/user';
-import { getUserAPI } from './features/user/userAPI';
-
 import { setLogged } from './features/isLogged/isLogged';
 
 import Navbar from './components/Navbar/Navbar';
@@ -22,20 +19,14 @@ import Profile from './pages/Profile/Profile';
 function App() {
 	const store = useStore();
 	const isLogged = useSelector((state) => state.isLogged.loginStatus);
+	const localIsLogged = localStorage.getItem('isLogged');
 
 	useEffect(() => {
-		const localToken = localStorage.getItem('token');
-		(async () => {
-			if (localToken) {
-				const response = await getUserAPI(localToken);
-				if (response !== false) {
-					store.dispatch(setUser(response.data.body));
-					const logObject = { loginStatus: true, token: localToken };
-					store.dispatch(setLogged(logObject));
-				}
-			}
-		})();
-	}, [store]);
+		if (localIsLogged) {
+			const parsedLocalIsLogged = JSON.parse(localIsLogged);
+			store.dispatch(setLogged(parsedLocalIsLogged));
+		}
+	}, [store, localIsLogged]);
 	return (
 		<div className="App">
 			<Router>
@@ -43,7 +34,7 @@ function App() {
 				<Switch>
 					<Route exact path="/login" component={Login}></Route>
 
-					{isLogged ? (
+					{isLogged || localIsLogged ? (
 						<Route exact path="/profile">
 							<Profile></Profile>
 						</Route>
@@ -66,7 +57,7 @@ export default App;
 // 	headers: {
 // 		accept: 'application/json, text/plain, */*',
 // 		'accept-language': 'fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7',
-// 		authorization: 'Bearer undefined',
+// 		authorization: 'Bearer',
 // 		'cache-control': 'no-cache',
 // 		pragma: 'no-cache',
 // 		'sec-ch-ua':
