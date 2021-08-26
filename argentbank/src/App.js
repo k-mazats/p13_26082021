@@ -22,6 +22,7 @@ import Profile from './pages/Profile/Profile';
 function App() {
 	const store = useStore();
 	const isLogged = useSelector((state) => state.isLogged.loginStatus);
+
 	useEffect(() => {
 		const localToken = localStorage.getItem('token');
 		(async () => {
@@ -42,11 +43,16 @@ function App() {
 				<Switch>
 					<Route exact path="/login" component={Login}></Route>
 
-					<Route exact path="/profile">
-						{isLogged ? <Profile></Profile> : <Redirect to="/"></Redirect>}
-					</Route>
+					{isLogged ? (
+						<Route exact path="/profile">
+							<Profile></Profile>
+						</Route>
+					) : null}
 
-					<Route path="/" component={Home}></Route>
+					<Route exact path="/" component={Home}></Route>
+					<Route>
+						<Redirect to="/" />
+					</Route>
 				</Switch>
 			</Router>
 			<Footer></Footer>
