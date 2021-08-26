@@ -1,17 +1,23 @@
 import { Link } from 'react-router-dom';
 import { useStore, useSelector } from 'react-redux';
+
 import { setLogged } from '../../features/isLogged/isLogged';
-import { resetUser } from '../../features/user/user'
+import { resetUser } from '../../features/user/user';
+
 import './Navbar.css';
+
 const Navbar = () => {
 	const store = useStore();
 	const isLogged = useSelector((state) => state.isLogged.loginStatus);
+	const user = useSelector((state) => state.user);
+
 	const logout = () => {
 		const isLogged = { loginStatus: false, token: '' };
 		store.dispatch(setLogged(isLogged));
-		store.dispatch(resetUser())
-		localStorage.removeItem('token')
+		store.dispatch(resetUser());
+		localStorage.removeItem('token');
 	};
+
 	return (
 		<nav className="main-nav">
 			<Link className="main-nav-logo" to="/">
@@ -26,7 +32,7 @@ const Navbar = () => {
 				<div>
 					<Link className="main-nav-item" to="/profile">
 						<i className="fa fa-user-circle"></i>
-						Tony
+						{user.firstName}
 					</Link>
 					<Link className="main-nav-item" to="/" onClick={logout}>
 						<i className="fa fa-sign-out"></i>
