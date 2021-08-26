@@ -7,7 +7,10 @@ import {
 } from 'react-router-dom';
 import { useStore, useSelector } from 'react-redux';
 
-import { setLogged } from './features/isLogged/isLogged';
+import { setUser, resetUser } from './features/user/user';
+
+import { getUserAPI } from './features/user/userAPI';
+import { setLogged, resetLogged } from './features/isLogged/isLogged';
 
 import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
@@ -18,15 +21,30 @@ import Profile from './pages/Profile/Profile';
 
 function App() {
 	const store = useStore();
+	const user = useSelector((state) => state.user);
 	const isLogged = useSelector((state) => state.isLogged.loginStatus);
-	const localIsLogged = localStorage.getItem('isLogged');
+	const localIsLogged = localStorage.getItem('isLogged')
+		? JSON.parse(localStorage.getItem('isLogged'))
+		: undefined;
 
 	useEffect(() => {
-		if (localIsLogged) {
-			const parsedLocalIsLogged = JSON.parse(localIsLogged);
-			store.dispatch(setLogged(parsedLocalIsLogged));
+		if (user.id === '') {
+			const currentToken = localIsLogged?.token || isLogged?.token;
+			if (currentToken) {
+				(async () => {
+					const response = await getUserAPI(currentToken);
+					if (response !== false) {
+						store.dispatch(setUser(response.data.body));
+						store.dispatch(setLogged(localIsLogged));
+					} else {
+						store.dispatch(resetLogged());
+						store.dispatch(resetUser());
+						localStorage.removeItem('isLogged');
+					}
+				})();
+			}
 		}
-	}, [store, localIsLogged]);
+	}, [store, user, isLogged, localIsLogged]);
 	return (
 		<div className="App">
 			<Router>
