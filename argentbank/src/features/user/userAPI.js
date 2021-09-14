@@ -11,6 +11,22 @@ export const getUserAPI = async (token) => {
 		});
 		return response;
 	} catch (err) {
-    return false;
-  }
+		return false;
+	}
+};
+
+export const editUserAPI = async (token, body) => {
+	try {
+		const response = await axios({
+			method: 'put',
+			url: 'http://localhost:3001/api/v1/user/profile',
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+			data: body,
+		});
+		return response;
+	} catch (err) {
+		return false;
+	}
 };

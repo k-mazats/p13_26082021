@@ -1,0 +1,56 @@
+.profile-form__modal-wrapper {
+	position: fixed;
+	top: 0;
+	height: 100%;
+	width: 100%;
+	background-color: #12002b9b;
+  display: flex;
+  justify-content:center;
+  align-items: center;
+}
+.profile-form__modal {
+	background-color: white;
+	width: 300px;
+	padding: 2rem;
+	color: #12002b;
+	position: relative;
+}
+.profile-form__close {
+	position: absolute;
+	right: 2rem;
+  top: 1rem;
+  cursor: pointer;
+}
+.profile-form__submit {
+	width: 100%;
+	padding: 8px;
+	font-size: 1.1rem;
+	font-weight: bold;
+	margin-top: 1rem;
+	border-color: #00bc77;
+	background-color: #00bc77;
+	color: #fff;
+}
+.input-remember {
+	display: flex;
+}
+
+.input-remember label {
+	margin-left: 0.25rem;
+}
+
+.input-wrapper {
+	display: flex;
+	flex-direction: column;
+	text-align: left;
+	margin-bottom: 1rem;
+}
+
+.input-wrapper label {
+	font-weight: bold;
+}
+
+.input-wrapper input {
+	padding: 5px;
+	font-size: 1.2rem;
+}
