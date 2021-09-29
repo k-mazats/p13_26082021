@@ -69,6 +69,7 @@ paths:
         - in: header
           name: Authorization
           description: Attach Bearer JWT token
+          type: string
           required: true
       produces:
         - application/json
@@ -92,6 +93,7 @@ paths:
         - in: header
           name: Authorization
           description: Attach Bearer JWT token
+          type: string
           required: true
         - in: body
           name: body
@@ -110,6 +112,121 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error
+  # /transactions/:
+  #   post:
+  #     security:
+  #       - Bearer: []
+  #     tags:
+  #       - Transactions Module
+  #     summary: Transactions API
+  #     description: API to create a new transaction.
+  #     parameters:
+  #       - in: header
+  #         name: Authorization
+  #         description: Attach Bearer JWT token
+  #         type: string
+  #         required: true
+  #     produces:
+  #       - application/json
+  #     responses:
+  #       '200':
+  #         description: Transaction created successully
+  #         schema:
+  #           $ref: '#/definitions/TransactionDetails'
+  #       '400':
+  #         description: Invalid Fields
+  #       '500':
+  #         description: Internal Server Error
+  /transactions/{transactionId}:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions Module
+      summary: Transactions API
+      description: API to fetch transaction details.
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          type: string
+          required: true
+        - in: path
+          name: transactionId
+          description: Transaction unique ID
+          type: number
+          required: true
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Transaction retrieved successully
+          schema:
+            $ref: '#/definitions/TransactionDetails'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions Module
+      summary: Transactions API
+      description: API to add, edit or delete transaction details.
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          type: string
+          required: true
+        - in: path
+          name: transactionId
+          description: Transaction unique ID
+          type: number
+          required: true
+        - in: body
+          name: body
+          description: Transaction Payload
+          required: true
+          schema:
+            $ref: '#/definitions/TransactionDetails'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Transaction details edited successully
+          schema:
+            $ref: '#/definitions/TransactionDetails'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /transactions/currentMonth:
+    get:
+        security:
+          - Bearer: []
+        tags:
+          - Transactions Module
+        summary: Transactions API
+        description: API to fetch transactions from current month.
+        parameters:
+          - in: header
+            name: Authorization
+            description: Attach Bearer JWT token
+            type: string
+            required: true
+        produces:
+          - application/json
+        responses:
+          '200':
+            description: Transactions retrieved successully
+            schema:
+              $ref: '#/definitions/TransactionsResponse'
+          '400':
+            description: Invalid Fields
+          '500':
+            description: Internal Server Error
 securityDefinitions:
   Bearer:
     type: apiKey
@@ -152,6 +269,15 @@ definitions:
             type: string
           email:
             type: string
+  TransactionsResponse:
+    type: array
+    items:
+      $ref: '#/definitions/TransactionDetails'
+  TransactionDetails:
+    type: object
+    properties:
+      id:
+        type: number
   LoginResponse:
     type: object
     properties:
